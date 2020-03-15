@@ -17,6 +17,7 @@
         <a-row type="flex" style="width:100%;text-align:center;height:100%">
           <a-col :span="4">
             <a-icon
+              v-if="user"
               class="trigger"
               type="menu"
               @click="showDrawer = !showDrawer"
@@ -29,7 +30,7 @@
               </router-link>
             </center>
           </a-col>
-          <a-col :span="4" @click="qrDrawerShow = true">
+          <a-col :span="4" @click="qrDrawerShow = true" v-if="user">
             <font-awesome-icon
               icon="qrcode"
               style="font-size:20px;position:absolute;top:22px;right:20px"
@@ -40,6 +41,7 @@
     </a-layout>
     <Drawer v-if="user" v-model="showDrawer" />
     <a-drawer
+      v-if="user"
       height="100%"
       placement="bottom"
       :visible="qrDrawerShow"
@@ -77,6 +79,7 @@
 <script>
 import Drawer from "./components/Drawer";
 import { mapActions, mapState } from "vuex";
+import router from "./router";
 export default {
   components: { Drawer },
   data() {
@@ -94,7 +97,13 @@ export default {
     ...mapState(["user"])
   },
   async created() {
-    await this.getMe();
+    if (
+      !(
+        router.currentRoute.name === "login" ||
+        router.currentRoute.name === "register"
+      )
+    )
+      await this.getMe();
   }
 };
 </script>

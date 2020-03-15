@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top:16px">
+  <div style="margin-top:16px" v-if="user">
     <a-row type="flex">
       <a-col :span="24">
         <a-card class="wallet-card">
