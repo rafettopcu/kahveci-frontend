@@ -22,7 +22,7 @@
           Remember me
         </a-checkbox>
         <a class="login-form-forgot" href="">
-          Forgot password
+          Şifremi unuttum
         </a>
         <a-button
           :loading="loginLoading"
@@ -30,12 +30,12 @@
           @click="clickLogin"
           class="login-form-button"
         >
-          Log in
+          Giriş yap
         </a-button>
-        Or
-        <a href="">
-          register now!
-        </a>
+        ya da
+        <router-link :to="{ name: 'register' }">
+          kayıt ol!
+        </router-link>
       </a-form-item>
     </a-form>
   </div>

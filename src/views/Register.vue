@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="register-back">
     <h2>Kaydol</h2>
     <a-divider></a-divider>
     <a-form>
@@ -13,10 +13,10 @@
         <a-input v-model="registerData.email"></a-input>
       </a-form-item>
       <a-form-item label="Parola">
-        <a-input v-model="registerData.password"></a-input>
+        <a-input v-model="registerData.password" type="password"></a-input>
       </a-form-item>
       <a-form-item label="Parola Onay">
-        <a-input v-model="registerData.password2"></a-input>
+        <a-input v-model="registerData.password2" type="password"></a-input>
       </a-form-item>
       <a-form-item label="Adres">
         <a-textarea v-model="registerData.address"></a-textarea>
@@ -37,6 +37,7 @@
 </template>
 <script>
 import { mapActions } from "vuex";
+import router from "../router";
 export default {
   data() {
     return {
@@ -58,6 +59,7 @@ export default {
       this.registerLoading = true;
       try {
         await this.doRegister(this.registerData);
+        router.push("/login");
       } catch (error) {
         this.errorText = error.response.data.message;
       }
@@ -66,3 +68,9 @@ export default {
   }
 };
 </script>
+<style>
+.register-back {
+  background: white;
+  padding: 16px;
+}
+</style>
