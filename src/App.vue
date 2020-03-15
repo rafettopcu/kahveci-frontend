@@ -38,7 +38,7 @@
         </a-row>
       </a-layout-header>
     </a-layout>
-    <Drawer v-model="showDrawer" />
+    <Drawer v-if="user" v-model="showDrawer" />
     <a-drawer
       height="100%"
       placement="bottom"
@@ -50,7 +50,7 @@
           <a-col style="margin-top:128px">
             <h3>QR Kodunuz</h3>
             <hr />
-            <qrcode value="Hello, World!" :options="{ width: 300 }"></qrcode>
+            <qrcode :value="user._id" :options="{ width: 300 }"></qrcode>
             <hr />
           </a-col>
         </a-row>
@@ -76,6 +76,7 @@
 </template>
 <script>
 import Drawer from "./components/Drawer";
+import { mapActions, mapState } from "vuex";
 export default {
   components: { Drawer },
   data() {
@@ -85,6 +86,15 @@ export default {
       headerTop: 0,
       qrDrawerShow: false
     };
+  },
+  methods: {
+    ...mapActions(["getMe"])
+  },
+  computed: {
+    ...mapState(["user"])
+  },
+  async created() {
+    await this.getMe();
   }
 };
 </script>

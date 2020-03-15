@@ -14,7 +14,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    isAuth: false
+    isAuth: false,
+    user: null,
+    token: null
   },
   mutations: {
     updateAuth: (state, isAuth) => {
@@ -23,6 +25,9 @@ export default new Vuex.Store({
     updateToken(state, token) {
       Vue.ls.set("token", token);
       state.token = token;
+    },
+    updateUser(state, user) {
+      state.user = user;
     }
   },
   actions: {
@@ -39,6 +44,15 @@ export default new Vuex.Store({
       });
       commit("updateToken", res.data.token);
       return res;
+    },
+    doSignOut: async ({ commit }) => {
+      await Vue.ls.clear();
+      commit("updateAuth", false);
+    },
+    getMe: async ({ commit }) => {
+      const res = await API.get(`/v1/user/me`);
+      commit("updateUser", res.data.user);
+      return res.data.user;
     }
   },
   modules: {}

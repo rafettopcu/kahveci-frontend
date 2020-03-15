@@ -16,7 +16,7 @@
           ></a-avatar>
         </a-col>
       </a-row>
-      <div class="drawer-full-name">Rafet Topçu</div>
+      <div class="drawer-full-name">{{ user.fullName }}</div>
       <hr />
       <div class="drawer-list-item">
         <font-awesome-icon icon="wallet" />
@@ -33,20 +33,31 @@
         Bildirimler
       </div>
 
-      <div class="drawer-footer">
+      <div class="drawer-footer" @click="clickSignOut">
         Çıkış yap
       </div>
     </a-drawer>
   </div>
 </template>
 <script>
+import { mapActions, mapState } from "vuex";
+import router from "../router";
+
 export default {
   props: ["value"],
   methods: {
+    ...mapActions(["doSignOut"]),
     onClose() {
       this.value = false;
       this.$emit("input", this.value);
+    },
+    async clickSignOut() {
+      await this.doSignOut();
+      router.go("/login");
     }
+  },
+  computed: {
+    ...mapState(["user"])
   }
 };
 </script>

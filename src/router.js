@@ -4,36 +4,36 @@ import Home from "./views/Home";
 import Register from "./views/Register";
 import Login from "./views/Login";
 import Stores from "./views/Stores";
-// import VueJwtDecode from "vue-jwt-decode";
+import VueJwtDecode from "vue-jwt-decode";
 
 Vue.use(VueRouter);
 
-// const ifAuthenticated = (to, from, next) => {
-//   const token = Vue.ls.get("token");
+const ifAuthenticated = (to, from, next) => {
+  const token = Vue.ls.get("token");
 
-//   const authUser = Vue.ls.get("token");
+  const authUser = Vue.ls.get("token");
 
-//   if (to.meta.requiresAuth) {
-//     if (authUser) {
-//       const { role } = VueJwtDecode.decode(token);
+  if (to.meta.requiresAuth) {
+    if (authUser) {
+      const { role } = VueJwtDecode.decode(token);
 
-//       if (to.meta.roles && to.meta.roles.length > 0) {
-//         if (to.meta.roles.includes(role)) {
-//           next();
-//         } else {
-//           next("/");
-//         }
-//       } else {
-//         next();
-//       }
-//     } else {
-//       Vue.ls.clear();
-//       next({ name: "login" });
-//     }
-//   } else {
-//     next();
-//   }
-// };
+      if (to.meta.roles && to.meta.roles.length > 0) {
+        if (to.meta.roles.includes(role)) {
+          next();
+        } else {
+          next("/");
+        }
+      } else {
+        next();
+      }
+    } else {
+      Vue.ls.clear();
+      next({ name: "login" });
+    }
+  } else {
+    next();
+  }
+};
 
 const ifNotAuthenticated = (to, from, next) => {
   const authUser = Vue.ls.get("token");
@@ -48,7 +48,11 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: Home
+    component: Home,
+    beforeEnter: ifAuthenticated,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: "/register",
@@ -65,7 +69,10 @@ const routes = [
   {
     path: "/stores",
     name: "stores",
-
+    beforeEnter: ifAuthenticated,
+    meta: {
+      requiresAuth: true
+    },
     component: Stores
   }
 ];
@@ -73,7 +80,10 @@ const routes = [
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes,
+  scrollBehavior() {
+    return { x: 0, y: 0 };
+  }
 });
 
 export default router;

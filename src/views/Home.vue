@@ -9,7 +9,9 @@
             </a-col>
             <a-col :span="18" class="wallet-text">
               Hesabıma Para Yükle
-              <div class="wallet-subtext">Cüzdanınızda 25₺ var.</div>
+              <div class="wallet-subtext">
+                Cüzdanınızda {{ user.wallet }}₺ var.
+              </div>
             </a-col>
           </a-row>
         </a-card>
@@ -25,13 +27,13 @@
               <a-progress
                 type="dashboard"
                 strokeColor="#764c24"
-                :percent="(scoreCoffee / maxCoffee) * 100"
+                :percent="(user.score / maxCoffee) * 100"
               >
                 <template v-slot:format="">
                   <div
-                    style="position:absolute;bottom:-32px;left:56px;color:#dfe6e9"
+                    style="position:absolute;bottom:-36px;left:56px;color:#dfe6e9"
                   >
-                    {{ scoreCoffee }}
+                    {{ user.score }}
                   </div>
                   <font-awesome-icon
                     style="font-size:30px;color:#dfe6e9"
@@ -43,7 +45,7 @@
             <a-col :span="14" class="score-text">
               <h2>Puanlarınız</h2>
               <div class="score-subtext">
-                Ücretsiz kahve kazanmak için {{ maxCoffee - scoreCoffee }} kahve
+                Ücretsiz kahve kazanmak için {{ maxCoffee - user.score }} kahve
                 daha almalısınız.
               </div>
             </a-col>
@@ -73,12 +75,15 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
-      maxCoffee: 15,
-      scoreCoffee: 4
+      maxCoffee: 15
     };
+  },
+  computed: {
+    ...mapState(["user"])
   }
 };
 </script>
