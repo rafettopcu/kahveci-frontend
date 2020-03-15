@@ -1,32 +1,141 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+  <div style="height:100% !important">
+    <a-layout>
+      <a-layout-header
+        :style="{
+          position: 'fixed',
+          width: '100%',
+          background: '#fff',
+          padding: '0px',
+          zIndex: 100,
+          top: headerTop > 0 ? -headerTop + 'px' : 0,
+          left: '0px'
+        }"
+        class="toolbarShadow navbar"
+        :class="{ 'navbar-hidden': !showNavbar }"
+      >
+        <a-row type="flex" style="width:100%;text-align:center;height:100%">
+          <a-col :span="4">
+            <a-icon
+              class="trigger"
+              type="menu"
+              @click="showDrawer = !showDrawer"
+            />
+          </a-col>
+          <a-col :span="16">
+            <center>
+              <router-link :to="{ name: 'home' }">
+                <div class="logo">kahveci</div>
+              </router-link>
+            </center>
+          </a-col>
+          <a-col :span="4" @click="qrDrawerShow = true">
+            <font-awesome-icon
+              icon="qrcode"
+              style="font-size:20px;position:absolute;top:22px;right:20px"
+            />
+          </a-col>
+        </a-row>
+      </a-layout-header>
+    </a-layout>
+    <Drawer v-model="showDrawer" />
+    <a-drawer
+      height="100%"
+      placement="bottom"
+      :visible="qrDrawerShow"
+      @close="qrDrawerShow = false"
+    >
+      <div style="height:100%">
+        <a-row type="flex" justify="center">
+          <a-col style="margin-top:128px">
+            <h3>QR Kodunuz</h3>
+            <hr />
+            <qrcode value="Hello, World!" :options="{ width: 300 }"></qrcode>
+            <hr />
+          </a-col>
+        </a-row>
+      </div>
+    </a-drawer>
+    <a-layout
+      id="components-layout-demo-custom-trigger"
+      style="height:100% !important"
+    >
+      <a-row type="flex" justify="center" style="height:100% !important">
+        <a-col
+          :lg="{ span: 18 }"
+          :sm="{ span: 24 }"
+          :md="{ span: 18 }"
+          :xs="{ span: 24 }"
+          style="margin-top:64px;height:100% !important"
+        >
+          <router-view></router-view>
+        </a-col>
+      </a-row>
+    </a-layout>
   </div>
 </template>
-
+<script>
+import Drawer from "./components/Drawer";
+export default {
+  components: { Drawer },
+  data() {
+    return {
+      showNavbar: true,
+      showDrawer: false,
+      headerTop: 0,
+      qrDrawerShow: false
+    };
+  }
+};
+</script>
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+@import url("https://fonts.googleapis.com/css?family=Lobster&display=swap");
+
+#components-layout-demo-custom-trigger .trigger {
+  font-size: 18px;
+  line-height: 56px;
+  padding: 5px 24px;
+  cursor: pointer;
+  float: left;
+  transition: color 0.3s;
 }
 
-#nav {
-  padding: 30px;
+#components-layout-demo-custom-trigger .trigger:hover {
+  color: #1890ff;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+.logo {
+  width: 200px;
+  height: 100%;
+  font-family: "Lobster", cursive;
+  font-size: 24px;
+  color: #764c24;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+.ant-drawer-body {
+  padding: 0px !important;
+}
+.threedot {
+  position: absolute !important;
+  top: 0px !important;
+}
+.navbar {
+  height: 64px;
+  width: 100%;
+  position: fixed;
+  box-shadow: 0 2px 15px rgba(71, 120, 120, 0.2);
+  transform: translate3d(0, 0, 0);
+  transition: 0.25s all ease-out;
+}
+.navbar.navbar-hidden {
+  box-shadow: none;
+  transform: translate3d(0, -100%, 0);
+}
+.toolbarqr {
+  font-size: 14px;
+  line-height: 1;
+  color: #3498db;
+  margin-right: 14px;
+  vertical-align: middle;
 }
 </style>
