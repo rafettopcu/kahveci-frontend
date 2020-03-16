@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin-bottom:90px">
     <a-row type="flex" v-if="cart && cart.length > 0">
       <a-col :span="24" v-for="(item, index) in cart" :key="index">
         <a-row
@@ -143,5 +143,11 @@ export default {
   padding: 18px 32px;
 
   text-align: center;
+  position: fixed;
+  z-index: 1000;
+
+  -webkit-box-shadow: 0px -5px 39px -5px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px -5px 39px -5px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px -5px 39px -5px rgba(0, 0, 0, 0.75);
 }
 </style>
