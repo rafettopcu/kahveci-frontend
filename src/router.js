@@ -4,6 +4,9 @@ import Home from "./views/Home";
 import Register from "./views/Register";
 import Login from "./views/Login";
 import Stores from "./views/Stores";
+import Products from "./views/Products";
+import Wallet from "./views/Wallet";
+import Cart from "./views/Cart";
 import VueJwtDecode from "vue-jwt-decode";
 
 Vue.use(VueRouter);
@@ -74,6 +77,33 @@ const routes = [
       requiresAuth: true
     },
     component: Stores
+  },
+  {
+    path: "/products",
+    name: "products",
+    beforeEnter: ifAuthenticated,
+    meta: {
+      requiresAuth: true
+    },
+    component: Products
+  },
+  {
+    path: "/cart",
+    name: "cart",
+    beforeEnter: ifAuthenticated,
+    meta: {
+      requiresAuth: true
+    },
+    component: Cart
+  },
+  {
+    path: "/wallet",
+    name: "wallet",
+    beforeEnter: ifAuthenticated,
+    meta: {
+      requiresAuth: true
+    },
+    component: Wallet
   }
 ];
 
