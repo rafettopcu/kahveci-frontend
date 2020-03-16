@@ -18,20 +18,30 @@
       </a-row>
       <div class="drawer-full-name">{{ user.fullName }}</div>
       <hr />
-      <div class="drawer-list-item">
-        <font-awesome-icon icon="wallet" />
-        Cüzdanım
-      </div>
+      <router-link :to="{ name: 'wallet' }" @click="onClose">
+        <div class="drawer-list-item">
+          <font-awesome-icon icon="wallet" />
+          Cüzdanım
+        </div>
+      </router-link>
       <router-link :to="{ name: 'stores' }" @click="onClose">
         <div class="drawer-list-item">
           <font-awesome-icon icon="store" />
           Mağazalar
         </div>
       </router-link>
-      <div class="drawer-list-item">
-        <font-awesome-icon icon="envelope" />
-        Bildirimler
-      </div>
+      <router-link :to="{ name: 'products' }" @click="onClose">
+        <div class="drawer-list-item">
+          <font-awesome-icon icon="coffee" />
+          Ürünler
+        </div>
+      </router-link>
+      <router-link :to="{ name: 'cart' }" @click="onClose">
+        <div class="drawer-list-item">
+          <font-awesome-icon icon="shopping-cart" />
+          Sepetim
+        </div>
+      </router-link>
 
       <div class="drawer-footer" @click="clickSignOut">
         Çıkış yap
