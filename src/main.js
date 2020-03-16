@@ -54,7 +54,9 @@ import VueQrcode from "@chenfengyuan/vue-qrcode";
 
 Vue.component(VueQrcode.name, VueQrcode);
 Vue.config.productionTip = false;
+import Ripple from "vue-ripple-directive";
 
+Vue.directive("ripple", Ripple);
 new Vue({
   router,
   store,

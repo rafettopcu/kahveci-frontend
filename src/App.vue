@@ -30,7 +30,7 @@
               </router-link>
             </center>
           </a-col>
-          <a-col :span="4" @click="qrDrawerShow = true" v-if="user">
+          <a-col :span="4" @click="qrDrawerShow = true" v-if="user" v-ripple>
             <font-awesome-icon
               icon="qrcode"
               style="font-size:20px;position:absolute;top:22px;right:20px"
@@ -68,7 +68,7 @@
           :sm="{ span: 24 }"
           :md="{ span: 18 }"
           :xs="{ span: 24 }"
-          style="margin-top:64px;height:100% !important"
+          style="margin-top:64px;"
         >
           <router-view></router-view>
         </a-col>
