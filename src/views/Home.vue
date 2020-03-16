@@ -1,16 +1,26 @@
 <template>
-  <div style="margin-top:16px" v-if="user">
+  <div v-if="user">
+    <LoadCreditModal v-model="loadCreditModalShow" />
     <a-row type="flex">
-      <a-col :span="24">
+      <a-col :span="24" v-ripple @click="clickWallet">
         <a-card class="wallet-card">
           <a-row :gutter="20" justify="center" align="middle">
             <a-col :span="6" style="text-align:right;">
               <font-awesome-icon icon="wallet" />
             </a-col>
             <a-col :span="18" class="wallet-text">
-              Hesabıma Para Yükle
+              Cüzdanıma Para Yükle
               <div class="wallet-subtext">
-                Cüzdanınızda {{ user.wallet }}₺ var.
+                Cüzdanınızda
+                <span style="font-size:24px;color:#55efc4"
+                  >{{
+                    user.wallet
+                      .toString()
+                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
+                  }}
+                  ₺</span
+                >
+                var.
               </div>
             </a-col>
           </a-row>
@@ -19,14 +29,14 @@
     </a-row>
     <hr />
     <a-row type="flex">
-      <a-col :span="24">
+      <a-col :span="24" v-ripple>
         <a-card class="score-card">
           <a-row :gutter="20" justify="center" align="middle">
             <a-col :span="10" style="text-align:right;">
               <!-- <font-awesome-icon icon="star" /> -->
               <a-progress
                 type="dashboard"
-                strokeColor="#764c24"
+                strokeColor="#55efc4"
                 :percent="(user.score / maxCoffee) * 100"
               >
                 <template v-slot:format="">
@@ -54,33 +64,38 @@
       </a-col>
     </a-row>
     <hr />
+    <router-link :to="{ name: 'stores' }" v-ripple>
+      <div class="main-list-item">
+        <font-awesome-icon icon="store" />
+        Mağazalar
+      </div>
+    </router-link>
 
-    <div class="main-list-item">
-      <font-awesome-icon icon="store" />
-      Mağazalar
-    </div>
     <hr />
-
-    <div class="main-list-item">
-      <font-awesome-icon icon="envelope" />
-      Bildirimler
-    </div>
-    <hr />
-
-    <div class="main-list-item">
-      <font-awesome-icon icon="shopping-cart" />
-      Sepetim
-    </div>
+    <router-link :to="{ name: 'cart' }" v-ripple>
+      <div class="main-list-item" v-ripple>
+        <font-awesome-icon icon="shopping-cart" />
+        Sepetim
+      </div>
+    </router-link>
     <hr />
   </div>
 </template>
 <script>
 import { mapState } from "vuex";
+import LoadCreditModal from "../components/LoadCreditModal";
 export default {
+  components: { LoadCreditModal },
   data() {
     return {
-      maxCoffee: 15
+      maxCoffee: 15,
+      loadCreditModalShow: false
     };
+  },
+  methods: {
+    clickWallet() {
+      this.loadCreditModalShow = true;
+    }
   },
   computed: {
     ...mapState(["user"])
@@ -97,7 +112,7 @@ export default {
   border-radius: 10px !important;
   background: #2d3436 !important;
   color: #dfe6e9 !important;
-  margin: 12px !important;
+
   font-size: 42px !important;
 }
 .wallet-text {
@@ -128,13 +143,13 @@ export default {
   color: #dfe6e9 !important;
   font-family: "Rubik", sans-serif;
   font-size: 20px;
-  margin: 8px 16px;
+  padding: 8px 16px;
 }
 .main-list-item svg {
   margin-right: 12px;
 }
 hr {
-  margin: 18px 0;
+  margin: 0;
   border-top: 0.02px solid grey;
   border-color: grey;
 }
