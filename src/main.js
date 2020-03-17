@@ -17,7 +17,9 @@ import {
   faEnvelope,
   faShoppingCart,
   faSignOutAlt,
-  faQrcode
+  faQrcode,
+  faBars,
+  faClock
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -31,6 +33,8 @@ library.add(faEnvelope);
 library.add(faShoppingCart);
 library.add(faSignOutAlt);
 library.add(faQrcode);
+library.add(faBars);
+library.add(faClock);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
