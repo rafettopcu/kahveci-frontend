@@ -15,12 +15,11 @@
         :class="{ 'navbar-hidden': !showNavbar }"
       >
         <a-row type="flex" style="width:100%;text-align:center;height:100%">
-          <a-col :span="4">
-            <a-icon
-              v-if="user"
-              class="trigger"
-              type="menu"
-              @click="showDrawer = !showDrawer"
+          <a-col :span="4" @click="showDrawer = !showDrawer">
+            <font-awesome-icon
+              v-ripple
+              icon="bars"
+              style="font-size:20px;position:absolute;top:22px;left:20px"
             />
           </a-col>
           <a-col :span="16">
@@ -30,8 +29,9 @@
               </router-link>
             </center>
           </a-col>
-          <a-col :span="4" @click="qrDrawerShow = true" v-if="user" v-ripple>
+          <a-col :span="4" @click="qrDrawerShow = true" v-if="user">
             <font-awesome-icon
+              v-ripple
               icon="qrcode"
               style="font-size:20px;position:absolute;top:22px;right:20px"
             />
@@ -64,9 +64,9 @@
     >
       <a-row type="flex" justify="center" style="height:100% !important">
         <a-col
-          :lg="{ span: 18 }"
+          :lg="{ span: 12 }"
           :sm="{ span: 24 }"
-          :md="{ span: 18 }"
+          :md="{ span: 12 }"
           :xs="{ span: 24 }"
           style="margin-top:64px;"
         >
