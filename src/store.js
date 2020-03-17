@@ -18,7 +18,8 @@ export default new Vuex.Store({
     user: null,
     token: null,
     products: null,
-    cart: []
+    cart: [],
+    caffes: []
   },
   mutations: {
     updateAuth: (state, isAuth) => {
@@ -72,6 +73,9 @@ export default new Vuex.Store({
     },
     updateOrders(state, orders) {
       state.user.orders = orders;
+    },
+    updateCaffes(state, caffes) {
+      state.user.caffes = caffes;
     }
   },
   actions: {
@@ -124,6 +128,11 @@ export default new Vuex.Store({
 
       await API.post("/v1/order/", { products: arr });
       commit("clearCart");
+    },
+    getAllCaffes: async ({ commit }) => {
+      const res = await API.get(`/v1/caffe/`);
+      commit("updateCaffes", res.data.caffes);
+      return res.data.caffes;
     }
   },
   modules: {}
