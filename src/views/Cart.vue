@@ -194,10 +194,13 @@ export default {
     },
 
     inc() {
-      if(this.step===1 &&this.cart.length===0)return
+      if (this.step === 1 && this.cart.length === 0) return;
       const func = (a, b) => a + b;
       if (this.step <= 3) this.step++;
-      if(this.step === 2) this.score = this.cart.map(x => (x.hasScore ? x.count : 0)).reduce(func, 0);
+      if (this.step === 2)
+        this.score = this.cart
+          .map(x => (x.hasScore ? x.count : 0))
+          .reduce(func, 0);
       if (this.step === 4) this.order();
     }
   }
@@ -237,6 +240,7 @@ export default {
 .footer {
   position: absolute;
   bottom: 0;
+  left: 0;
   width: 100%;
   height: 84px;
   /* border-top-left-radius: 22px; */
@@ -254,6 +258,7 @@ export default {
   box-shadow: 0px -2px 139px -2px rgba(0, 0, 0, 0.75);
 }
 .steps {
+  left: 0;
   position: fixed;
   z-index: 1001;
   bottom: 84px;
