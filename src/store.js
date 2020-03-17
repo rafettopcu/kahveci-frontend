@@ -18,37 +18,7 @@ export default new Vuex.Store({
     user: null,
     token: null,
     products: null,
-    cart: [
-      {
-        hasScore: true,
-        _id: "5e63ab2f00ab3f6b788d0a48",
-        name: "Espresso",
-        price: 8,
-        count: 1,
-        photo:
-          "https://www.tchibo.de/newmedia/art_img/MAIN-IMPORTED/f5e5f06b19deab34/barista-espresso-kasigi-4-adet.jpg",
-        __v: 0
-      },
-      {
-        hasScore: true,
-        _id: "5e63a59c24f7754c1a168937",
-        name: "Sütlü Kahve",
-        price: 12,
-        count: 1,
-        photo:
-          "https://iasbh.tmgrup.com.tr/554269/752/395/0/0/574/302?u=https://isbh.tmgrup.com.tr/sbh/2018/12/31/sutlu-kahve-nasil-yapilir-1546246095095.jpeg",
-        __v: 0
-      },
-      {
-        hasScore: true,
-        _id: "5e6fa8fdff011ed771cedf22",
-        name: "Cheesecake",
-        price: 12.5,
-        count: 2,
-        photo:
-          "https://www.thespruceeats.com/thmb/zXB9_pJ9Z40SUi75eRezebs5lTM=/960x0/filters:no_upscale():max_bytes(150000):strip_icc()/gluten-free-new-york-cheesecake-1450985-hero-01-dc54f9daf38044238b495c7cefc191fa.jpg"
-      }
-    ]
+    cart: []
   },
   mutations: {
     updateAuth: (state, isAuth) => {
@@ -96,6 +66,12 @@ export default new Vuex.Store({
     },
     removeProductFromCart(state, product) {
       state.cart = state.cart.filter(x => x._id !== product._id);
+    },
+    clearCart(state) {
+      state.cart = [];
+    },
+    updateOrders(state, orders) {
+      state.user.orders = orders;
     }
   },
   actions: {
@@ -122,6 +98,11 @@ export default new Vuex.Store({
       commit("updateUser", res.data.user);
       return res.data.user;
     },
+    getMeOrders: async ({ commit }) => {
+      const res = await API.get(`/v1/user/me/order`);
+      commit("updateOrders", res.data.orders);
+      return res.data.orders;
+    },
     loadCredit: async ({ commit }, ammount) => {
       const res = await API.put(`/v1/user/me/load-credit`, { ammount });
       commit("increaseWallet", ammount);
@@ -132,6 +113,17 @@ export default new Vuex.Store({
       const { products } = res.data;
       commit("updateProducts", products);
       return products;
+    },
+    postOrder: async ({ state, commit }) => {
+      let arr = [];
+      await state.cart.forEach(x => {
+        for (let i = 0; i < x.count; i++) {
+          arr.push(x._id);
+        }
+      });
+
+      await API.post("/v1/order/", { products: arr });
+      commit("clearCart");
     }
   },
   modules: {}

@@ -1,6 +1,6 @@
 <template>
   <div style="margin-bottom:90px">
-    <a-row type="flex" v-if="cart && cart.length > 0">
+    <a-row type="flex" v-if="cart && cart.length > 0 && step === 1">
       <a-col :span="24" v-for="(item, index) in cart" :key="index">
         <a-row
           type="flex"
@@ -51,7 +51,66 @@
         </div>
       </a-col>
     </a-row>
-    <div v-else>
+    <a-row v-else-if="cart && step === 2">
+      <a-col style="margin:20px;color:white " v-if="user">
+        <a-form>
+          <a-form-item label="Ad Soyad">
+            <a-input v-model="user.fullName"></a-input>
+          </a-form-item>
+          <a-form-item label="Adres">
+            <a-textarea rows="5" v-model="user.address"></a-textarea>
+          </a-form-item>
+        </a-form>
+      </a-col>
+    </a-row>
+    <a-row v-else-if="cart && step === 3">
+      <a-col style="margin:20px;color:white " v-if="user">
+        <h2 style="color:white">Sepetim</h2>
+
+        <table style="width:100%">
+          <tr v-for="(item, index) in cart" :key="index">
+            <td>{{ item.name }}</td>
+            <td>{{ item.count }} adet</td>
+            <td>{{ item.count * item.price }}₺</td>
+          </tr>
+          <tr style="border-top:1px solid grey">
+            <td></td>
+            <td></td>
+            <td>{{ totalAmmount }}₺</td>
+          </tr>
+        </table>
+
+        <br />
+        <br />
+        <br />
+        <h2 style="color:white">Adres Bilgilerim</h2>
+        <table style="width:100%">
+          <tr>
+            <td>Ad Soyad</td>
+            <td>{{ user.fullName }}</td>
+          </tr>
+          <tr>
+            <td>Adres</td>
+            <td>{{ user.address }}</td>
+          </tr>
+        </table>
+      </a-col>
+    </a-row>
+    <a-row v-else-if="cart && step === 4">
+      <a-col>
+        <a-result status="success">
+          <template v-slot:title>
+            <span style="color:white">Sipraişiniz başarıyla tamamlandı.</span>
+          </template>
+          <template v-slot:subTitle>
+            <span style="color:grey"
+              >Aldığınız ürünlerle {{ score }} puan kazandınız</span
+            >
+          </template>
+        </a-result>
+      </a-col>
+    </a-row>
+    <div v-else-if="!(cart && cart.length > 0)">
       <a-result status="404">
         <template v-slot:extra>
           <router-link :to="{ name: 'products' }">
@@ -71,23 +130,55 @@
         </template>
       </a-result>
     </div>
-
+    <a-row type="flex" class="steps">
+      <a-col class="step" :class="step > 1 ? 'passed-step' : ''" :span="8"
+        ><span :style="{ color: step >= 1 ? 'white' : '#636e72' }"
+          >Sepetim</span
+        ></a-col
+      >
+      <a-col class="step" :class="step > 2 ? 'passed-step' : ''" :span="8"
+        ><span :style="{ color: step >= 2 ? 'white' : '#636e72' }"
+          >Adres</span
+        ></a-col
+      >
+      <a-col class="step" :class="step > 3 ? 'passed-step' : ''" :span="8"
+        ><span :style="{ color: step >= 3 ? 'white' : '#636e72' }"
+          >Onayla</span
+        ></a-col
+      >
+    </a-row>
     <a-row type="flex" align="middle" justify="space-between" class="footer">
       <a-col style="height: 100%;vertical-alignment:middle;padding-top:4px"
         >{{ totalAmmount }} ₺</a-col
       >
       <a-col style="height: 100%;"
-        ><a-button shape="round" size="large"
-          >Alışverişi tamamla</a-button
-        ></a-col
+        ><a-button shape="round" size="large" @click="inc()">{{
+          step === 1
+            ? "Speti onayla"
+            : step === 2
+            ? "Adresi onayla"
+            : step === 3
+            ? "Siparişi tamamla"
+            : "Tamamlandı!"
+        }}</a-button></a-col
       >
     </a-row>
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 export default {
+  data() {
+    return {
+      step: 1,
+      score: 0,
+      addressUser: null
+    };
+  },
+  created() {
+    this.addressUser = { ...this.user };
+  },
   computed: {
     ...mapState(["cart", "user"]),
     totalAmmount() {
@@ -96,7 +187,18 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["updateCartProductCount", "removeProductFromCart"])
+    ...mapMutations(["updateCartProductCount", "removeProductFromCart"]),
+    ...mapActions(["postOrder"]),
+    async order() {
+      await this.postOrder();
+    },
+
+    inc() {
+      const func = (a, b) => a + b;
+      if (this.step <= 3) this.step++;
+      if(this.step === 2) this.score = this.cart.map(x => (x.hasScore ? x.count : 0)).reduce(func, 0);
+      if (this.step === 4) this.order();
+    }
   }
 };
 </script>
@@ -136,8 +238,8 @@ export default {
   bottom: 0;
   width: 100%;
   height: 84px;
-  border-top-left-radius: 22px;
-  border-top-right-radius: 22px;
+  /* border-top-left-radius: 22px; */
+  /* border-top-right-radius: 22px; */
   background: white;
   font-size: 28px;
   padding: 18px 32px;
@@ -149,5 +251,29 @@ export default {
   -webkit-box-shadow: 0px -5px 39px -5px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 0px -5px 39px -5px rgba(0, 0, 0, 0.75);
   box-shadow: 0px -5px 39px -5px rgba(0, 0, 0, 0.75);
+}
+.steps {
+  position: fixed;
+  z-index: 1001;
+  bottom: 84px;
+  height: 6px;
+  margin: 0;
+
+  width: 100%;
+  background: #b2bec3;
+}
+.step span {
+  position: absolute;
+  top: -22px;
+  left: 0;
+  color: white;
+}
+.passed-step {
+  background: #00cec9;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.address-form {
+  margin: 12px;
 }
 </style>
