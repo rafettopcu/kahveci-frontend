@@ -46,7 +46,10 @@
                     {{ user.score }}
                   </div>
                   <font-awesome-icon
-                    style="font-size:30px;color:#dfe6e9"
+                    style="font-size:30px;"
+                    :style="{
+                      color: user.score < maxCoffee ? 'grey' : 'white'
+                    }"
                     icon="coffee"
                   />
                 </template>
@@ -54,9 +57,14 @@
             </a-col>
             <a-col :span="14" class="score-text">
               <h2>Puanlarınız</h2>
-              <div class="score-subtext">
+              <div class="score-subtext" v-if="user.score < maxCoffee">
                 Ücretsiz kahve kazanmak için {{ maxCoffee - user.score }} kahve
                 daha almalısınız.
+              </div>
+              <div v-else class="score-subtext">
+                Topladğınız puanlarla
+                {{ parseInt(user.score / maxCoffee, 10) }} ücretsiz kahve
+                alabilirsiniz.
               </div>
             </a-col>
           </a-row>

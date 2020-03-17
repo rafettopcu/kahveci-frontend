@@ -149,12 +149,12 @@
     </a-row>
     <a-row type="flex" align="middle" justify="space-between" class="footer">
       <a-col style="height: 100%;vertical-alignment:middle;padding-top:4px"
-        >{{ totalAmmount }} ₺</a-col
-      >
+        >{{ totalAmmount }} ₺
+      </a-col>
       <a-col style="height: 100%;"
         ><a-button shape="round" size="large" @click="inc()">{{
           step === 1
-            ? "Speti onayla"
+            ? "Sepeti onayla"
             : step === 2
             ? "Adresi onayla"
             : step === 3
@@ -194,6 +194,7 @@ export default {
     },
 
     inc() {
+      if(this.step===1 &&this.cart.length===0)return
       const func = (a, b) => a + b;
       if (this.step <= 3) this.step++;
       if(this.step === 2) this.score = this.cart.map(x => (x.hasScore ? x.count : 0)).reduce(func, 0);
@@ -248,9 +249,9 @@ export default {
   position: fixed;
   z-index: 1000;
 
-  -webkit-box-shadow: 0px -5px 39px -5px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px -5px 39px -5px rgba(0, 0, 0, 0.75);
-  box-shadow: 0px -5px 39px -5px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 0px -2px 139px -2px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px -2px 139px -2px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px -2px 139px -2px rgba(0, 0, 0, 0.75);
 }
 .steps {
   position: fixed;

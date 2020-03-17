@@ -63,7 +63,6 @@ export default {
     }
   },
   created() {
-    console.log("rafet");
     this.productCount = 1;
   },
   watch: {
