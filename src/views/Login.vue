@@ -1,43 +1,50 @@
 <template>
   <div class="form-back">
-    <a-form id="components-form-demo-normal-login" class="login-form">
-      <h1>Giriş</h1>
-      <a-divider></a-divider>
-      <a-form-item>
-        <a-input placeholder="Email" v-model="loginData.email">
-          <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
-        </a-input>
-      </a-form-item>
-      <a-form-item>
-        <a-input
-          type="password"
-          placeholder="Password"
-          v-model="loginData.password"
-        >
-          <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
-        </a-input>
-      </a-form-item>
-      <a-form-item>
-        <a-checkbox>
-          Remember me
-        </a-checkbox>
-        <a class="login-form-forgot" href="">
-          Şifremi unuttum
-        </a>
-        <a-button
-          :loading="loginLoading"
-          type="primary"
-          @click="clickLogin"
-          class="login-form-button"
-        >
-          Giriş yap
-        </a-button>
-        ya da
-        <router-link :to="{ name: 'register' }">
-          kayıt ol!
-        </router-link>
-      </a-form-item>
-    </a-form>
+    <a-row type="flex" align="middle" justify="center" class="form-back">
+      <a-col :span="20">
+        <div class="login-title">Giriş</div>
+        <a-divider></a-divider>
+        <a-form-item>
+          <a-input
+            class="login-input"
+            placeholder="Email"
+            v-model="loginData.email"
+            size="large"
+          >
+            <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
+          </a-input>
+        </a-form-item>
+        <a-form-item>
+          <a-input
+            class="login-input"
+            type="password"
+            placeholder="Password"
+            size="large"
+            v-model="loginData.password"
+          >
+            <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
+          </a-input>
+        </a-form-item>
+        <a-form-item>
+          <a-button
+            :loading="loginLoading"
+            ghost
+            @click="clickLogin"
+            class="login-form-button"
+            block
+            shape="round"
+            size="large"
+          >
+            Giriş yap
+          </a-button>
+          <router-link :to="{ name: 'register' }">
+            <div class="register-block">
+              Kayıt ol!
+            </div>
+          </router-link>
+        </a-form-item>
+      </a-col>
+    </a-row>
   </div>
 </template>
 
@@ -80,14 +87,20 @@ export default {
   width: 100%;
 }
 .form-back {
-  margin-top: 128px;
-  margin-left: 10px;
-  margin-right: 10px;
-  background: #fff !important;
-  padding: 20px;
-  border-radius: 20px;
+  height: 100%;
 }
-.form-back h1 {
-  color: #34495e;
+
+.login-title {
+  color: white;
+  font-size: 30px;
+}
+.login-input input {
+  border-radius: 60px !important;
+  background: white;
+}
+.register-block {
+  margin-top: 12px;
+  color: white !important;
+  text-align: center;
 }
 </style>

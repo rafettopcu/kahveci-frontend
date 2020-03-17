@@ -1,34 +1,84 @@
 <template>
   <div class="register-back">
-    <h2>Kaydol</h2>
+    <h2 style="color:white">Kaydol</h2>
     <a-divider></a-divider>
-    <a-form>
-      <a-form-item label="Ad soyad">
-        <a-input v-model="registerData.fullName"></a-input>
-      </a-form-item>
-      <a-form-item label="Kullanıcı adı">
-        <a-input v-model="registerData.username"></a-input>
-      </a-form-item>
-      <a-form-item label="Email">
-        <a-input v-model="registerData.email"></a-input>
-      </a-form-item>
-      <a-form-item label="Parola">
-        <a-input v-model="registerData.password" type="password"></a-input>
-      </a-form-item>
-      <a-form-item label="Parola Onay">
-        <a-input v-model="registerData.password2" type="password"></a-input>
-      </a-form-item>
-      <a-form-item label="Adres">
-        <a-textarea v-model="registerData.address"></a-textarea>
+    <a-form class="regiter-form">
+      <a-form-item>
+        <template v-slot:label>
+          <span style="color:white">
+            Ad Soyad
+          </span>
+        </template>
+        <a-input
+          class="register-input"
+          v-model="registerData.fullName"
+        ></a-input>
       </a-form-item>
       <a-form-item>
+        <template v-slot:label>
+          <span style="color:white">
+            Kullanıcı adı
+          </span>
+        </template>
+        <a-input
+          class="register-input"
+          v-model="registerData.username"
+        ></a-input>
+      </a-form-item>
+      <a-form-item>
+        <template v-slot:label>
+          <span style="color:white">
+            Email
+          </span>
+        </template>
+        <a-input class="register-input" v-model="registerData.email"></a-input>
+      </a-form-item>
+      <a-form-item>
+        <template v-slot:label>
+          <span style="color:white">
+            Parola
+          </span>
+        </template>
+        <a-input
+          class="register-input"
+          v-model="registerData.password"
+          type="password"
+        ></a-input>
+      </a-form-item>
+      <a-form-item>
+        <template v-slot:label>
+          <span style="color:white">
+            Parola Onay
+          </span>
+        </template>
+        <a-input
+          class="register-input"
+          v-model="registerData.password2"
+          type="password"
+        ></a-input>
+      </a-form-item>
+      <a-form-item>
+        <template v-slot:label>
+          <span style="color:white">
+            Adres
+          </span>
+        </template>
+        <a-textarea
+          class="register-input"
+          v-model="registerData.address"
+        ></a-textarea>
+      </a-form-item>
+      <a-form-item v-if="errorText">
         <a-alert v-if="errorText" type="error" :message="errorText" banner />
       </a-form-item>
       <a-form-item>
         <a-button
           :loading="registerLoading"
-          type="primary"
           @click="clickRegister"
+          ghost
+          shape="round"
+          block
+          size="large"
           >Kaydol</a-button
         >
       </a-form-item>
@@ -68,9 +118,16 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .register-back {
+  padding: 16px 16px 0 16px;
+}
+
+.regiter-form label {
+  color: white !important;
+}
+.register-input {
+  border-radius: 14px !important;
   background: white;
-  padding: 16px;
 }
 </style>
