@@ -18,28 +18,16 @@
       </a-row>
       <div class="drawer-full-name">{{ user.fullName }}</div>
       <hr />
-      <router-link :to="{ name: 'wallet' }" @click="onClose">
+
+      <router-link
+        v-for="(item, index) in menu"
+        :key="index"
+        :to="item.to"
+        @click="onClose"
+      >
         <div class="drawer-list-item">
-          <font-awesome-icon icon="wallet" />
-          Cüzdanım
-        </div>
-      </router-link>
-      <router-link :to="{ name: 'stores' }" @click="onClose">
-        <div class="drawer-list-item">
-          <font-awesome-icon icon="store" />
-          Mağazalar
-        </div>
-      </router-link>
-      <router-link :to="{ name: 'products' }" @click="onClose">
-        <div class="drawer-list-item">
-          <font-awesome-icon icon="coffee" />
-          Ürünler
-        </div>
-      </router-link>
-      <router-link :to="{ name: 'cart' }" @click="onClose">
-        <div class="drawer-list-item">
-          <font-awesome-icon icon="shopping-cart" />
-          Sepetim
+          <font-awesome-icon :icon="item.icon" />
+          {{ item.text }}
         </div>
       </router-link>
 
@@ -55,6 +43,32 @@ import router from "../router";
 
 export default {
   props: ["value"],
+  data() {
+    return {
+      menu: [
+        {
+          text: "Cüzdanım",
+          to: { name: "wallet" },
+          icon: "wallet"
+        },
+        {
+          text: "Mağazalar",
+          to: { name: "stores" },
+          icon: "store"
+        },
+        {
+          text: "Ürünler",
+          to: { name: "products" },
+          icon: "coffee"
+        },
+        {
+          text: "Sepetim",
+          to: { name: "cart" },
+          icon: "shopping-cart"
+        }
+      ]
+    };
+  },
   methods: {
     ...mapActions(["doSignOut"]),
     onClose() {
