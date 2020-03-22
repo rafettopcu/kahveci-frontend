@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-drawer
-      style="background:red"
+      style="background:red;z-index:111111"
       placement="left"
       :closable="true"
       @close="onClose"
@@ -17,7 +17,7 @@
         </a-col>
       </a-row>
       <div class="drawer-full-name">{{ user.fullName }}</div>
-      <hr />
+      <hr style="margin:20px 0" />
 
       <router-link
         v-for="(item, index) in menu"
@@ -65,6 +65,11 @@ export default {
           text: "Sepetim",
           to: { name: "cart" },
           icon: "shopping-cart"
+        },
+        {
+          text: "Siparişlerim",
+          to: { name: "orders" },
+          icon: "clock"
         }
       ]
     };
