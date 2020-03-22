@@ -19,7 +19,8 @@ export default new Vuex.Store({
     token: null,
     products: null,
     cart: [],
-    caffes: []
+    caffes: [],
+    orders: null
   },
   mutations: {
     updateAuth: (state, isAuth) => {
@@ -39,8 +40,6 @@ export default new Vuex.Store({
       state.products = products;
     },
     addCart(state, payload) {
-      console.log(payload.product, payload.productCount);
-
       let found = false;
       state.cart = state.cart.map(element => {
         if (element._id === payload.product._id) {
@@ -72,7 +71,7 @@ export default new Vuex.Store({
       state.cart = [];
     },
     updateOrders(state, orders) {
-      state.user.orders = orders;
+      state.orders = orders;
     },
     updateCaffes(state, caffes) {
       state.user.caffes = caffes;
@@ -103,7 +102,7 @@ export default new Vuex.Store({
       return res.data.user;
     },
     getMeOrders: async ({ commit }) => {
-      const res = await API.get(`/v1/user/me/order`);
+      const res = await API.get(`/v1/user/me/orders`);
       commit("updateOrders", res.data.orders);
       return res.data.orders;
     },
