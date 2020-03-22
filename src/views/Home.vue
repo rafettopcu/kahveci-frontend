@@ -87,26 +87,36 @@
       </div>
     </router-link>
     <hr />
+    <a-row type="flex">
+      <a-col v-for="(item, index) in products" :key="index" :span="8">
+        <MiniProductCard :product="item" />
+      </a-col>
+    </a-row>
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import LoadCreditModal from "../components/LoadCreditModal";
+import MiniProductCard from "../components/MiniProductCard";
 export default {
-  components: { LoadCreditModal },
+  components: { LoadCreditModal, MiniProductCard },
   data() {
     return {
       maxCoffee: 15,
       loadCreditModalShow: false
     };
   },
+  async created() {
+    await this.getProducts();
+  },
   methods: {
+    ...mapActions(["getProducts"]),
     clickWallet() {
       this.loadCreditModalShow = true;
     }
   },
   computed: {
-    ...mapState(["user"])
+    ...mapState(["user", "products"])
   }
 };
 </script>
