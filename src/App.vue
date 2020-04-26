@@ -14,18 +14,27 @@
         class="toolbarShadow navbar"
         :class="{ 'navbar-hidden': !showNavbar }"
       >
-        <a-row type="flex" style="width:100%;text-align:center;height:100%">
-          <a-col :span="4" @click="showDrawer = !showDrawer">
-            <font-awesome-icon v-ripple icon="bars" style="font-size:20px;" />
+        <a-row
+          type="flex"
+          justify="space-between"
+          :gutter="10"
+          style="width:100%;text-align:center;height:100%"
+        >
+          <a-col @click="showDrawer = !showDrawer">
+            <font-awesome-icon
+              v-ripple
+              icon="bars"
+              style="margin-left:20px;font-size:20px;"
+            />
           </a-col>
-          <a-col :span="16">
+          <a-col>
             <center>
               <router-link :to="{ name: 'home' }">
                 <div class="logo">kahveci</div>
               </router-link>
             </center>
           </a-col>
-          <a-col :span="4" @click="qrDrawerShow = true" v-if="user">
+          <a-col @click="qrDrawerShow = true" v-if="user">
             <font-awesome-icon v-ripple icon="qrcode" style="font-size:20px;" />
           </a-col>
         </a-row>

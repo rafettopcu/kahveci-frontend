@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import Storage from "vue-ls";
-// import VueJwtDecode from "vue-jwt-decode";
+import VueJwtDecode from "vue-jwt-decode";
 import API from "./axios";
 
 const options = {
@@ -19,8 +19,22 @@ export default new Vuex.Store({
     token: null,
     products: null,
     cart: [],
-    caffes: [],
-    orders: null
+    caffes: null,
+    orders: null,
+    addedPorduct: null,
+    scannedUser: null
+  },
+  getters: {
+    token() {
+      console.log(Vue.ls.get("token"));
+
+      return Vue.ls.get("token");
+    },
+    role(state, getters) {
+      console.log(getters.token);
+
+      return VueJwtDecode.decode(getters.token).role;
+    }
   },
   mutations: {
     updateAuth: (state, isAuth) => {
@@ -74,7 +88,26 @@ export default new Vuex.Store({
       state.orders = orders;
     },
     updateCaffes(state, caffes) {
-      state.user.caffes = caffes;
+      state.caffes = caffes;
+    },
+    updateAddedProduct(state, product) {
+      state.addedPorduct = product;
+      state.products.unshift(product);
+    },
+    SET_SCANNED_USER(state, user) {
+      state.scannedUser = user;
+    },
+    USE_SCORE(state, score) {
+      state.scannedUser.score -= score;
+    },
+    DELETE_PRODUCT(state, id) {
+      state.products = state.products.filter(x => x._id !== id);
+    },
+    ADD_CAFFE(state, caffe) {
+      state.caffes.unshift(caffe);
+    },
+    DELETE_CAFFE(state, id) {
+      state.caffes = state.caffes.filter(x => x._id !== id);
     }
   },
   actions: {
@@ -96,6 +129,21 @@ export default new Vuex.Store({
       await Vue.ls.clear();
       commit("updateAuth", false);
     },
+    getUser: async ({ commit }, userId) => {
+      const res = await API.get(`/v1/user/${userId}`);
+      commit("SET_SCANNED_USER", res.data.user);
+      return res.data.user;
+    },
+    useScore: async ({ commit, state }, score) => {
+      await API.patch(`/v1/user/${state.scannedUser._id}`);
+      commit("USE_SCORE", score);
+    },
+    updateProduct: async ({ commit }, payload) => {
+      await API.put(`/v1/product/${payload.id}`, {
+        ...payload.changes
+      });
+      commit();
+    },
     getMe: async ({ commit }) => {
       const res = await API.get(`/v1/user/me`);
       commit("updateUser", res.data.user);
@@ -113,9 +161,24 @@ export default new Vuex.Store({
     },
     getProducts: async ({ commit }) => {
       const res = await API.get("/v1/product");
-      const { products } = res.data;
+      const products = res.data.products.map(x => {
+        return {
+          ...x,
+          editMode: false
+        };
+      });
       commit("updateProducts", products);
       return products;
+    },
+    addProduct: async ({ commit }, payload) => {
+      const res = await API.post("/v1/product/", { ...payload });
+      const { product } = res.data;
+      commit("updateAddedProduct", product);
+      return product;
+    },
+    deleteProduct: async ({ commit }, id) => {
+      await API.delete(`/v1/product/${id}`);
+      commit("DELETE_PRODUCT", id);
     },
     postOrder: async ({ state, commit }) => {
       let arr = [];
@@ -130,8 +193,31 @@ export default new Vuex.Store({
     },
     getAllCaffes: async ({ commit }) => {
       const res = await API.get(`/v1/caffe/`);
-      commit("updateCaffes", res.data.caffes);
-      return res.data.caffes;
+      const caffes = res.data.caffes.map(x => {
+        return {
+          ...x,
+          editMode: false
+        };
+      });
+      console.log(caffes);
+
+      commit("updateCaffes", caffes);
+      return caffes;
+    },
+    addCaffe: async ({ commit }, payload) => {
+      const res = await API.post("/v1/caffe", { ...payload });
+      const caffe = res.data.caffe;
+      commit("ADD_CAFFE", caffe);
+    },
+    updateCaffe: async ({ commit }, payload) => {
+      await API.put("/v1/caffe/" + payload.id, {
+        ...payload.changes
+      });
+      commit();
+    },
+    deleteCaffe: async ({ commit }, id) => {
+      await API.delete("/v1/caffe/" + id);
+      commit("DELETE_CAFFE");
     }
   },
   modules: {}

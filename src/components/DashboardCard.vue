@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="dashboard-card" :style="{ background: bgColor }">
+    <div
+      class="dashboard-card"
+      :style="{ background: bgColor, color: 'white' }"
+    >
       <div v-if="!loading">
         <div class="dashboard-title">{{ title }}</div>
         <div class="dashboard-subtitle">{{ subTitle }}</div>
@@ -54,7 +57,7 @@ export default {
 .dashboard-card {
   /* background: #82ccdd; */
   height: 160px;
-  border-radius: 12px;
+  border-radius: 4px;
   margin: 16px;
   font-family: "Rubik", sans-serif;
   color: white;

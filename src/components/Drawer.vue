@@ -25,7 +25,11 @@
         :to="item.to"
         @click="onClose"
       >
-        <div class="drawer-list-item">
+        <hr v-if="item.hr" />
+        <div
+          class="drawer-list-item"
+          v-if="!item.roles || item.roles.includes(role)"
+        >
           <font-awesome-icon :icon="item.icon" />
           {{ item.text }}
         </div>
@@ -38,7 +42,7 @@
   </div>
 </template>
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 import router from "../router";
 
 export default {
@@ -70,6 +74,13 @@ export default {
           text: "Siparişlerim",
           to: { name: "orders" },
           icon: "clock"
+        },
+        {
+          hr: true,
+          text: "Karekod Oku",
+          to: { name: "read-qr" },
+          icon: "qrcode",
+          roles: [1, 2]
         }
       ]
     };
@@ -86,7 +97,8 @@ export default {
     }
   },
   computed: {
-    ...mapState(["user"])
+    ...mapState(["user"]),
+    ...mapGetters(["role"])
   }
 };
 </script>

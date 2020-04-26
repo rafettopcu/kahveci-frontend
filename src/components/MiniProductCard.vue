@@ -1,23 +1,45 @@
 <template>
   <div>
+    <a-modal title="Ürün ekle" v-model="showAddProductModal" :footer="null">
+      <AddProductModal v-model="showAddProductModal" />
+    </a-modal>
     <AddCartModal v-model="addCartModalShow" :product="product" />
-    <div class="product-card" @click="clickProduct">
+    <div v-if="product" class="product-card" @click="clickProduct">
       <img :src="product.photo" alt="" class="product-card-image" />
       <div class="product-card-bg">
         <div class="product-card-name ">{{ product.name }}</div>
       </div>
     </div>
+
+    <div
+      v-else-if="!product && role === 1"
+      class="product-card"
+      @click="showAddProductModal = true"
+    >
+      <img style="background:white" alt="" class="product-card-image" />
+      <div class="product-card-bg">
+        <div style="text-align:center;padding:20px 20px 0 20px;font-size:32px">
+          +<br />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
 import AddCartModal from "../components/AddCartModal";
+import AddProductModal from "../components/AddProductModal";
 export default {
-  components: { AddCartModal },
+  components: { AddCartModal, AddProductModal },
   props: ["product"],
   data() {
     return {
+      showAddProductModal: false,
       addCartModalShow: false
     };
+  },
+  computed: {
+    ...mapGetters(["role"])
   },
   methods: {
     clickProduct() {

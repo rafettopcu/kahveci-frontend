@@ -16,7 +16,7 @@
                   >{{
                     user.wallet
                       .toString()
-                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
+                      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
                   }}
                   ₺</span
                 >
@@ -91,13 +91,16 @@
       <a-col v-for="(item, index) in products" :key="index" :span="8">
         <MiniProductCard :product="item" />
       </a-col>
+      <a-col :span="8">
+        <MiniProductCard :product="null" />
+      </a-col>
     </a-row>
   </div>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
-import LoadCreditModal from "../components/LoadCreditModal";
-import MiniProductCard from "../components/MiniProductCard";
+import { mapState, mapActions } from 'vuex';
+import LoadCreditModal from '../components/LoadCreditModal';
+import MiniProductCard from '../components/MiniProductCard';
 export default {
   components: { LoadCreditModal, MiniProductCard },
   data() {
@@ -110,23 +113,23 @@ export default {
     await this.getProducts();
   },
   methods: {
-    ...mapActions(["getProducts"]),
+    ...mapActions(['getProducts']),
     clickWallet() {
       this.loadCreditModalShow = true;
     }
   },
   computed: {
-    ...mapState(["user", "products"])
+    ...mapState(['user', 'products'])
   }
 };
 </script>
 <style>
-@import url("https://fonts.googleapis.com/css?family=Rubik&display=swap");
+@import url('https://fonts.googleapis.com/css?family=Rubik&display=swap');
 
 .wallet-card {
   /* box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); */
   border: 0px !important;
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   border-radius: 10px !important;
   background: #2d3436 !important;
   color: #dfe6e9 !important;
@@ -145,7 +148,7 @@ export default {
   text-align: center !important;
   padding-top: 32px !important;
   padding-bottom: 32px !important;
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   border-radius: 10px !important;
   background: #2d3436 !important;
   color: #dfe6e9 !important;
@@ -159,7 +162,7 @@ export default {
 }
 .main-list-item {
   color: #dfe6e9 !important;
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 20px;
   padding: 8px 16px;
 }

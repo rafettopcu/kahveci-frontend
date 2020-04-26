@@ -10,6 +10,7 @@ import Products from "./views/Products";
 import Wallet from "./views/Wallet";
 import Cart from "./views/Cart";
 import Orders from "./views/Orders";
+import ReadQr from "./views/ReadQr";
 import Dashboard from "./views/admin/Dashboard";
 
 Vue.use(VueRouter);
@@ -126,6 +127,16 @@ const routes = [
       roles: [1]
     },
     component: Dashboard
+  },
+  {
+    path: "/read-qr",
+    name: "read-qr",
+    beforeEnter: ifAuthenticated,
+    meta: {
+      requiresAuth: true,
+      roles: [1, 2]
+    },
+    component: ReadQr
   }
 ];
 
@@ -133,7 +144,7 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
-  scrollBehavior () {
+  scrollBehavior() {
     return { x: 0, y: 0 };
   }
 });
