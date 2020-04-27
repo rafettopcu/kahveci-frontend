@@ -151,17 +151,28 @@
       <a-col style="height: 100%;vertical-alignment:middle;padding-top:4px"
         >{{ totalAmmount }} ₺
       </a-col>
-      <a-col style="height: 100%;"
-        ><a-button shape="round" size="large" @click="inc()">{{
-          step === 1
-            ? "Sepeti onayla"
-            : step === 2
-            ? "Adresi onayla"
-            : step === 3
-            ? "Siparişi tamamla"
-            : "Tamamlandı!"
-        }}</a-button></a-col
-      >
+      <a-col style="height: 100%;">
+        <span v-if="totalAmmount === 0" style="font-size:14px;color:grey"
+          >Sepet Boş!</span
+        >
+        <a-button
+          v-else-if="!(totalAmmount > user.wallet)"
+          shape="round"
+          size="large"
+          @click="inc()"
+          >{{
+            step === 1
+              ? "Sepeti onayla"
+              : step === 2
+              ? "Adresi onayla"
+              : step === 3
+              ? "Siparişi tamamla"
+              : "Tamamlandı!"
+          }}</a-button
+        >
+
+        <span v-else style="font-size:14px;color:red">Yetersiz bakiye!</span>
+      </a-col>
     </a-row>
   </div>
 </template>
