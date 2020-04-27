@@ -108,6 +108,12 @@ export default new Vuex.Store({
     },
     DELETE_CAFFE(state, id) {
       state.caffes = state.caffes.filter(x => x._id !== id);
+    },
+    UPDATE_WALLET(state, wallet) {
+      state.user.wallet = wallet;
+    },
+    UPDATE_SCORE(state, score) {
+      state.user.score = score;
     }
   },
   actions: {
@@ -188,8 +194,10 @@ export default new Vuex.Store({
         }
       });
 
-      await API.post("/v1/order/", { products: arr });
+      const res = await API.post("/v1/order/", { products: arr });
       commit("clearCart");
+      commit("UPDATE_WALLET", res.data.wallet);
+      commit("UPDATE_SCORE", res.data.score);
     },
     getAllCaffes: async ({ commit }) => {
       const res = await API.get(`/v1/caffe/`);
